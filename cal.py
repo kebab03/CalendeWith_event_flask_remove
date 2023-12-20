@@ -28,7 +28,8 @@ cursor.execute('''
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         date DATE,
         event TEXT,
-        username TEXT
+        username TEXT,
+        colorCode TEXT
     )
 ''')
 
@@ -130,8 +131,9 @@ def get_events():
     conn = sqlite3.connect('events.db')
     cursor = conn.cursor()
     print("sono in getaaEvent------------------------- line 234")
-    cursor.execute('SELECT date, event ,username FROM events')
+    cursor.execute('SELECT date, event ,username ,colorCode FROM events')
     events = cursor.fetchall()
+    print("events :-- ",events)
 
     # Se viene effettuata una richiesta GET, restituisce i dati nel formato richiesto
     if request.method == 'GET':
@@ -166,11 +168,13 @@ def add_event():
     date = request.form['date']
     event = request.form['event']
     username = request.form['username']  # Aggiungi questa riga per ottenere l'username
+    colorCod =request.form['colorCode']
     conn = sqlite3.connect('events.db')
     cursor = conn.cursor()
     print("line             160   date:", date)
     print("line             161    event:", event)
     print("line .....................162 username :", username)
+    print("line             178    colorCod:", colorCod)
 
     # Remove leading zero from the month component
     year, month, day = date.split('-')
@@ -180,7 +184,7 @@ def add_event():
     formatted_date = '-'.join([year, month, day])
     print(" line 187 formatted_date::=", formatted_date)
     # Insert event into the database
-    cursor.execute('INSERT INTO events (date, event, username) VALUES (?, ?, ?)', (formatted_date, event, username))
+    cursor.execute('INSERT INTO events (date, event, username,colorCode) VALUES (?, ?, ?,?)', (formatted_date, event, username,colorCod))
     conn.commit()
     print('liNe----------------------- 174 ..........di addevent ')
     # Get the month and year from the date
