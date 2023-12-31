@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title>注册</title>
+    </head>
+    <body>
+        {% if message %}
+        <p style="color: red;">{{message}}</p>
+        {% endif %}
+        <form action="register" method="post">
+            <legend>Please input your information of this form: (at least 6 digits,alphabet and numbers are required)</legend>
+            <p><input name="username" placeholder="username" value="{{username}}"></p>
+            <p><input name="password" placeholder="password" type="password"></p>
+            <p><input name="sec_password" placeholder="password" type="password"></p>
+            <p><button type="submit">Register!</button></p>
+        </form>
+        <a href="./login"> <input type=button value="Log In!" > </a>
+    </body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendario Eventi</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            height: 50px;
+        }
+        /* Colori per i nomi utente specifici */
+        .user1 { background-color: #ffcc00; }
+        .user2 { background-color: #66ccff; }
+        /* Aggiungi altri colori per altri nomi utente se necessario */
+    </style>
+</head>
+<body>
+    <h1>Calendario Eventi</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Domenica</th>
+                <th>Lunedì</th>
+                <th>Martedì</th>
+                <th>Mercoledì</th>
+                <th>Giovedì</th>
+                <th>Venerdì</th>
+                <th>Sabato</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body">
+            <!-- Il corpo del calendario verrà popolato dinamicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        // Dati sugli eventi con date e nomi utente
+        var eventsData = {
+            "2023-11-01": { username: "user1" },
+            "2023-11-05": { username: "user2" },
+            // Aggiungi altri eventi con date e nomi utente se necessario
+        };
+
+        function updateCalendar(events) {
+            var calendarBody = document.getElementById('calendar-body');
+            calendarBody.innerHTML = '';
+
+            var currentDate = new Date('2023-11-01'); // Data di partenza
+
+            var currentMonth = currentDate.getMonth();
+
+            while (currentDate.getMonth() === currentMonth) {
+                var tableRow = document.createElement('tr');
+
+                for (var i = 0; i < 7; i++) {
+                    var tableData = document.createElement('td');
+
+                    if (currentDate.getMonth() === currentMonth) {
+                        var date = currentDate.toISOString().split('T')[0];
+                        var eventData = events[date];
+                        console.log("eventData   :"+eventData);
+                        console.log("Nome utente:", eventData.username);
+
+
+                        if (eventData && eventData.username) {
+                            tableData.textContent = eventData.username;
+                            tableData.classList.add(eventData.username.toLowerCase());
+                        } else {
+                            tableData.textContent = currentDate.getDate();
+                        }
+
+                        currentDate.setDate(currentDate.getDate() + 1);
+                    }
+
+                    tableRow.appendChild(tableData);
+                }
+
+                calendarBody.appendChild(tableRow);
+            }
+        }
+
+        // Chiama la funzione per aggiornare il calendario con i dati sugli eventi
+        updateCalendar(eventsData);
+    </script>
+</body>
+</html>

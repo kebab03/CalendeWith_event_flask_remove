@@ -1,0 +1,53 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JSON Example</title>
+</head>
+<body>
+    <h1>JSON Data</h1>
+    <p>First Name: {{ first_name }}</p>
+    <!-- Use JavaScript to parse JSON -->
+		
+    <script>
+
+        var currentDate = new Date(2023, 1 - 1, 23);
+      var currentMonth = currentDate.getMonth() + 1;
+      var currentYear = currentDate.getFullYear();
+
+      var numDays = new Date(currentYear, currentMonth, 0).getDate();
+
+      var dayCounter = 24;
+      //window.alert("sono in updateCalendar 202 ");
+
+
+        /////////////////window.alert("sono in updateCalendar.................. 176 ");
+        var date = currentYear + '-' + currentMonth + '-' + dayCounter;
+        console.log("line   293       date dopo json  ");
+        console.log(date  );
+		console.log('{{ first_name }}');
+        console.log(typeof first_name);
+        var jsonData = {{ first_name | tojson | safe }};
+        // Access JSON data in JavaScript
+		console.log("jsonData-------");
+		console.log(jsonData);
+        console.log(typeof jsonData);
+        console.log(jsonData.name);
+        console.log(jsonData.age);
+        console.log(jsonData.city);
+
+        //if ("2023-1-1" in jsonData) {
+            if (date in jsonData) {
+            
+            console.log(date+"date----is in -list" );
+            console.log(  jsonData[date]);
+            var eventList = jsonData[date];
+
+
+          }
+
+
+
+    </script>
+</body>
+</html>

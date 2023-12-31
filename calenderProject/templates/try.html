@@ -1,0 +1,48 @@
+function updateCalendar(month, year, events, username) {
+    var calendarBody = document.getElementById('calendar-body');
+    calendarBody.innerHTML = '';
+    var currentDate = new Date(year, month - 1, 1);
+    var currentMonth = currentDate.getMonth() + 1;
+    var currentYear = currentDate.getFullYear();
+    var numDays = new Date(currentYear, currentMonth, 0).getDate();
+    var dayCounter = 1;
+  
+    for (var row = 1; row <= 5; row++) {
+      var tableRow = document.createElement('tr');
+      for (var col = 1; col <= 7; col++) {
+        if (dayCounter <= numDays) {
+          var date = currentYear + '-' + currentMonth + '-' + dayCounter;
+          var tableData = document.createElement('td');
+          tableData.innerHTML = '<span>' + dayCounter + '</span>';
+          tableData.setAttribute('data-date', date);
+          tableRow.appendChild(tableData);
+          dayCounter++;
+  
+          if (date in events) {
+            var eventList = events[date];
+            var eventHTML = '';
+            for (var i = 0; i < eventList.length; i++) {
+              eventHTML += '<p>' + eventList[i] + '</p>';
+            }
+            tableData.innerHTML += eventHTML;
+  
+            // Aggiunta di classi CSS basate su 'username'
+            if (eventList.includes(username)) {
+              tableData.classList.add('username-color');
+            }
+            // Aggiungi altri controlli per altri valori di 'username' se necessario
+          }
+  
+          tableData.addEventListener('click', function() {
+            selectDate(this.getAttribute('data-date'));
+          });
+  
+          tableRow.appendChild(tableData);
+        } else {
+          tableRow.innerHTML += '<td></td>';
+        }
+      }
+      calendarBody.appendChild(tableRow);
+    }
+  }
+  

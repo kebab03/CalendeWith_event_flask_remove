@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendario Eventi</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            height: 50px;
+        }
+        /* Colori per i nomi utente specifici */
+        .user1 { background-color: #ffcc00; }
+        .user2 { background-color: #66ccff; }
+        .user4 { background-color: rgb(69, 173, 0); }
+        /* Aggiungi altri colori per altri nomi utente se necessario */
+    </style>
+</head>
+<body>
+    <h1>Calendario Eventi</h1>
+    <div>
+        <label for="month">Seleziona un mese:</label>
+        <select id="month" value="10">
+            <option value="0">Gennaio</option>
+            <option value="1">Febbraio</option>
+            <option value="2">Marzo</option>
+            <option value="3">Aprile</option>
+            <option value="4">Maggio</option>
+            <option value="5">Giugno</option>
+            <option value="6">Luglio</option>
+            <option value="7">Agosto</option>
+            <option value="8">Settembre</option>
+            <option value="9">Ottobre</option>
+            <option value="10">Novembre</option>
+            <option value="11">Dicembre</option>
+        </select>
+        <label for="year">Seleziona un anno:</label>
+        <input type="number" id="year" min="1900" max="2100" value="2023">
+        <button onclick="updateCalendar(eventsData)">Aggiorna</button>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Domenica</th>
+                <th>Lunedì</th>
+                <th>Martedì</th>
+                <th>Mercoledì</th>
+                <th>Giovedì</th>
+                <th>Venerdì</th>
+                <th>Sabato</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body">
+            <!-- Il corpo del calendario verrà popolato dinamicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        var eventsData = {
+            "2023-10-01": { evento: "new eventi 2", username: "user1" },
+            "2023-10-05": { evento: "eventi 7", username: "user2" },
+            "2023-10-06": { evento: "eventi 4", username: "user4" },
+            // Aggiungi altri eventi con date e nomi utente se necessario
+        };
+
+        function updateCalendar(events) {
+            var calendarBody = document.getElementById('calendar-body');
+            calendarBody.innerHTML = '';
+
+            var selectedMonth = document.getElementById('month').value;
+            var selectedYear = document.getElementById('year').value;
+
+            var currentDate = new Date(selectedYear, selectedMonth, 1);
+
+            var currentMonth = currentDate.getMonth();
+
+            while (currentDate.getMonth() === currentMonth) {
+                var tableRow = document.createElement('tr');
+
+                for (var i = 0; i < 7; i++) {
+                    var tableData = document.createElement('td');
+
+                    if (currentDate.getMonth() === currentMonth) {
+                        var date = currentDate.toISOString().split('T')[0];
+                        //window.alert("date   :"+date);
+                        console.log("date  is--- :"+date);
+                        var eventData = events[date];
+                        //window.alert("eventData   :"+eventData);
+                        console.log("eventData   :"+eventData.username);
+
+                        if (eventData && eventData.username) {
+                            tableData.textContent = eventData.evento || eventData.username;
+                            tableData.classList.add(eventData.username.toLowerCase());
+                        } else {
+                            tableData.textContent = currentDate.getDate();
+                        }
+
+                        currentDate.setDate(currentDate.getDate() + 1);
+                    }
+                    console.log("type ofeventData   :"+ typeof eventData);
+                    console.log("eventData   :"+eventData);
+                    tableRow.appendChild(tableData);
+                }
+
+                calendarBody.appendChild(tableRow);
+            }
+        }
+
+        // Chiama la funzione per aggiornare il calendario con i dati sugli eventi
+        updateCalendar(eventsData);
+    </script>
+</body>
+</html>

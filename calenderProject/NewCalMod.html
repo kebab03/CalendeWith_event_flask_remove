@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Calendario Eventi</title>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+            height: 50px;
+        }
+        /* Colori per i nomi utente specifici */
+        .admin { background-color: #ffcc00; }
+        .sharif { background-color: #66ccff; }
+        /* Aggiungi altri colori per altri nomi utente se necessario */
+    </style>
+</head>
+<body>
+    <h1>Calendario Eventi</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Domenica</th>
+                <th>Lunedì</th>
+                <th>Martedì</th>
+                <th>Mercoledì</th>
+                <th>Giovedì</th>
+                <th>Venerdì</th>
+                <th>Sabato</th>
+            </tr>
+        </thead>
+        <tbody id="calendar-body">
+            <!-- Il corpo del calendario verrà popolato dinamicamente -->
+        </tbody>
+    </table>
+
+    <script>
+        // Dati sugli eventi con date e nomi utente
+        var eventsData = {};
+
+        function updateCalendar(events) {
+            var calendarBody = document.getElementById('calendar-body');
+            calendarBody.innerHTML = '';
+
+            var currentDate = new Date('2023-01-01'); // Data di partenza
+
+            var currentMonth = currentDate.getMonth() + 1; // Month starts from 0
+
+            while (currentDate.getMonth() + 1 === currentMonth) {
+                var tableRow = document.createElement('tr');
+
+                for (var i = 0; i < 7; i++) {
+                    var tableData = document.createElement('td');
+                    tableData.onclick = function() {
+            addEvent(this.getAttribute('data-date'));
+            };
+            tableData.setAttribute('onclick', "addEvent('" + currentDate + "')");
+            tableData.setAttribute('data-date', currentDate);
+            tableRow.appendChild(tableData);
+                    if (currentDate.getMonth() + 1 === currentMonth) {
+                        var date = currentDate.toISOString().split('T')[0];
+                        var eventData = events[date];
+
+                        //var keys = Object.keys(eventData);
+                        //console.log("keys:- "+keys)
+//for (key in keys) {
+  // code block to be executed
+ // console.log(eventData[key]);
+//}
+// Visualizza le chiavi per capire quali proprietà sono presenti
+
+
+                        console.log("eventData:-="+eventData.keys);
+                        if (eventData && eventData.identifier) {
+                            tableData.textContent = eventData.username;
+                            tableData.classList.add(eventData.identifier.toLowerCase()); // Assign class based on identifier
+                        } else {
+                            tableData.textContent = currentDate.getDate();
+                        }
+
+                        currentDate.setDate(currentDate.getDate() + 1);
+                    }
+
+                    tableRow.appendChild(tableData);
+                }
+
+                calendarBody.appendChild(tableRow);
+            }
+        }
+        function addEvent(date) {
+    window.alert("Sono nella funzione addEvent");
+    var eventName = prompt('Inserisci il nome dell\'evento:');
+    var eventDate = new Date(date);
+    var year = eventDate.getFullYear();
+    var month = String(eventDate.getMonth() + 1).padStart(2, '0');
+    var day = String(eventDate.getDate()).padStart(2, '0');
+    var formattedDate = `${year}-${month}-${day}`;
+
+    if (eventName) {
+        var eventData = { date: formattedDate, event: eventName, username: "username" };
+        window.alert("Event Data: " + JSON.stringify(eventData));
+
+        // Esegue la richiesta AJAX solo se jQuery è incluso correttamente.
+        // Assicurati di includere jQuery nel tuo documento HTML.
+        $.ajax({
+            url: '/addevent',
+            method: 'POST',
+            data: eventData,
+            success: function (response) {
+                window.alert("Evento aggiunto con successo!");
+                // Fai qualcosa con la risposta, se necessario
+            },
+            error: function (error) {
+                window.alert("Si è verificato un errore durante l'aggiunta dell'evento.");
+                console.error(error);
+            }
+        });
+    }
+}
+        // New event data in the format var
+        var eventDataVar = [
+    ['2023-1-2', '222222222222222222', 'admin'],
+    ['2023-1-4', '4444444444444444', 'admin'],
+    ['2023-1-6', 'jnk', 'admin']
+    // Aggiungi altri dati degli eventi qui se necessario
+];
+
+eventDataVar.forEach(event => {
+    var eventDateParts = event[0].split('-'); // Dividi la stringa della data in parti
+    var year = eventDateParts[0];
+    var month = eventDateParts[1];
+    var day = eventDateParts[2];
+
+    // Formatta la data con zero iniziale per il mese se necessario
+    var formattedDate = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+
+    eventsData[formattedDate] = { username: event[1], identifier: event[2] };
+});
+
+// Chiama la funzione per aggiornare il calendario con i dati sugli eventi
+updateCalendar(eventsData);
+    </script>
+</body>
+</html>
