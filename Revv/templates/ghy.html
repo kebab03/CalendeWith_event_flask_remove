@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8' />
+    <title>Calendario Eventi</title>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/index.global.min.js'></script>
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="row">
+        
+       
+        
+    </div>
+    <div id='calendar'></div>
+   
+    <form id="event-form">
+        <div class="row">
+            <div class="col-md-3">
+                <label for="date">Date:</label>
+                <input type="date" id="date" name="date" required class="form-control">       
+            </div>
+            <div class="col-md-6">
+                <label for="event">Event:</label>
+                <input type="text" id="event" name="event" required class="form-control">
+            </div>
+            <div class="col-md-3">
+                <button type="button" onclick="Paddevent()" class="btn btn-primary">presddEvent</button>
+            </div>
+        </div>
+    </form>
+</body>
+    <script>
+        function Paddevent() {
+            var eventName = document.getElementById('event').value;
+            var dateInput = document.getElementById('date').value;
+        
+            console.log("eventName:", eventName);
+            console.log("dateInput:", dateInput);
+
+            //return false;
+            // Resto del tuo codice...
+        }
+
+
+    </script>
+
+</html>
